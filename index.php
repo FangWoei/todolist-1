@@ -1,4 +1,7 @@
 <?php
+
+session_start();
+
     $completed = [];
     $tasks=[];
     $database = new PDO(
@@ -41,6 +44,7 @@ $tasks = $query->fetchAll();
       >
       <div class="card-body">
           <h3 class="card-title mb-3">My Todo List</h3>
+          <?php if ( isset( $_SESSION["user"] ) ) { ?>
           <ul class="list-group">
               <?php foreach ($tasks as $task) { ?>
                 <li
@@ -112,6 +116,15 @@ $tasks = $query->fetchAll();
             />
             <button class="btn btn-primary btn-sm rounded ms-2">Add</button>
         </form>
+        <?php } ?>
+        <div> 
+            <?php if ( isset( $_SESSION["user"] ) ) { ?>
+            <button class="btn btn-primary mt-3"><a href="logout.php" class="text-white">Logout</a></button>
+            <?php } else { ?>
+            <button class="btn btn-primary mt-3"><a href="signup.php" class="text-white">Sign up</a></button>
+            <button class="btn btn-primary mt-3"><a href="login.php" class="text-white">Login</a></button>
+            <?php } ?>
+        </div>
         </div>
       </div>
     </div>
