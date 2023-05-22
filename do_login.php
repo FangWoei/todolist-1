@@ -14,7 +14,7 @@ $database = new PDO(
 
     
     if ( empty($email) || empty($password) ) {
-        echo 'All fields are required';
+        $error = 'All fields are required';
     } else {
         $sql = "SELECT * FROM users where email = :email";
         $query = $database->prepare( $sql );
@@ -23,17 +23,21 @@ $database = new PDO(
         ]);
         $user = $query->fetch();
         if ( empty( $user ) ) {
-            echo "The email provided does not exists";
+            $error = "The email provided does not exists";
         } else {
             if ( password_verify( $password, $user["password"] ) ) {
                 $_SESSION["user"] = $user;
 
-                header("Location: index.php");
+                header("Location: /");
                 exit;
             } else {
-                echo "The password provided is not match";
+                $error = "The password provided is not match";
             }
         }
 
     }
-    
+    if ( isset( $error ) ) {
+        $_SESSION['error'] = $error;
+        header("Location: /login");
+        exit;
+    }

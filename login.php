@@ -20,6 +20,16 @@
     <div class="card rounded shadow-sm mx-auto my-4" style="max-width: 500px;">
         <div class="card-body">
             <h3 class="card-title mb-3">Login to your account</h3>
+            <?php 
+            if ( isset( $_SESSION['error'] ) ) : ?>
+                <div class="alert alert-danger" role="alert">
+                    <?php
+                        echo $_SESSION['error'];
+
+                        unset( $_SESSION['error'] );
+                    ?>
+                </div>
+            <?php endif; ?>
             <form action="do_login.php" method="POST">
                 <div class="mb-3">
                     <label for="email" class="form-label">Email address</label>
@@ -34,7 +44,7 @@
                 </div>
             </form>
             <div class="text-center">
-                <a href="index.php">Go back</a>
+                <a href="/">Go back</a>
             </div>
         </div>
     </div>
