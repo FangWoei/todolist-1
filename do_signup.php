@@ -21,8 +21,6 @@ $sql = "SELECT * FROM users where email = :email";
     ]);
     $user = $query->fetch();
 
-
-
 if( empty($name) || empty($email) || empty($password) ||empty($confirm_password)){
     $error = 'All fields are required';
 } else if ($password !== $confirm_password ) {
