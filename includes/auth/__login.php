@@ -1,13 +1,6 @@
 <?php
 
-session_start();
-
-$database = new PDO(
-    'mysql:host=devkinsta_db;
-    dbname=todolist_01',
-   'root',
-   'WaoDc0cvoNR1eUiM'
-);
+    $db = new DB();
 
     $email = $_POST["email"];
     $password = $_POST["password"];
@@ -16,12 +9,12 @@ $database = new PDO(
     if ( empty($email) || empty($password) ) {
         $error = 'All fields are required';
     } else {
-        $sql = "SELECT * FROM users where email = :email";
-        $query = $database->prepare( $sql );
-        $query->execute([
-            'email' => $email
-        ]);
-        $user = $query->fetch();
+        $user = $db->fetch(
+            "SELECT * FROM users where email = :email",
+            [
+                'email' => $email
+            ]
+        );
         if ( empty( $user ) ) {
             $error = "The email provided does not exists";
         } else {

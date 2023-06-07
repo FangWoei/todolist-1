@@ -1,25 +1,19 @@
 <?php
 
-session_start();
 
-$database = new PDO(
-    'mysql:host=devkinsta_db;
-    dbname=todolist_01',
-   'root',
-   'WaoDc0cvoNR1eUiM'
-);
+$db = new DB();
 
 $name = $_POST["name"];
 $email = $_POST["email"];
 $password = $_POST["password"];
 $confirm_password = $_POST["confirm_password"];
 
-$sql = "SELECT * FROM users where email = :email";
-    $query = $database->prepare( $sql );
-    $query->execute([
+$user = $db->fetch(
+    "SELECT * FROM users where email = :email",
+    [
         'email' => $email
-    ]);
-    $user = $query->fetch();
+    ]
+);
 
 if( empty($name) || empty($email) || empty($password) ||empty($confirm_password)){
     $error = 'All fields are required';
@@ -33,12 +27,11 @@ if( empty($name) || empty($email) || empty($password) ||empty($confirm_password)
 } else {
     $sql = "INSERT INTO users ( `name`, `email`, `password` )
         VALUES(:name, :email, :password)";
-        $query = $database->prepare( $sql );
-        $query->execute([
+       $db->insert( $sql, [
             'name' => $name,
             'email' => $email,
             'password' => password_hash( $password, PASSWORD_DEFAULT)
-        ]);
+        ] );
 
         header("Location: /login");
         exit;
@@ -50,5 +43,3 @@ if (isset( $error ) ) {
     header("Location:/signup");
     exit;
 }
-
-?>
